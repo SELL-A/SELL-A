@@ -1,0 +1,273 @@
+import os
+import requests
+
+def Get_Aircraft_list_by_airline_code(airlineCode, pageSize=10, pageOffset=0):
+    """
+    :API_description: Airline Fleet [BETA] - list of active aircraft of an airline
+    :param airlineCode: IATA or ICAO code of the airline (required).
+    :param pageSize: Number of results per page (optional, default 10).
+    :param pageOffset: Offset for pagination (optional, default 0).
+    :response_schema:
+    ```json
+{
+  "totalCount": 132,
+  "pageOffset": 0,
+  "pageSize": 10,
+  "hasNextPage": true,
+  "count": 10,
+  "items": [
+    {
+      "id": 2156818,
+      "reg": "PH-AXT",
+      "active": true,
+      "serial": "13122",
+      "hexIcao": "4869C3",
+      "airlineName": "KLM",
+      "iataCodeShort": "32Q",
+      "icaoCode": "A21N",
+      "model": "A21N",
+      "modelCode": "321-252NX",
+      "numSeats": 227,
+      "deliveryDate": "2026-05-22",
+      "registrationDate": "2026-05-22",
+      "typeName": "Airbus A321 NEO",
+      "numEngines": 2,
+      "engineType": "Jet",
+      "isFreighter": false,
+      "productionLine": "Airbus A321 NEO",
+      "ageYears": 0,
+      "verified": true,
+      "numRegistrations": 1
+    },
+    {
+      "id": 2156583,
+      "reg": "PH-AXR",
+      "active": true,
+      "serial": "13080",
+      "hexIcao": "4868F8",
+      "airlineName": "KLM",
+      "iataCodeShort": "32Q",
+      "icaoCode": "A21N",
+      "model": "A21N",
+      "modelCode": "321-252NX",
+      "numSeats": 227,
+      "firstFlightDate": "2026-02-27",
+      "deliveryDate": "2026-03-27",
+      "registrationDate": "2026-03-27",
+      "typeName": "Airbus A321 NEO",
+      "numEngines": 2,
+      "engineType": "Jet",
+      "isFreighter": false,
+      "productionLine": "Airbus A321 NEO",
+      "ageYears": 0.3,
+      "verified": true,
+      "numRegistrations": 1
+    },
+    {
+      "id": 2156577,
+      "reg": "PH-AXN",
+      "active": true,
+      "serial": "12997",
+      "hexIcao": "4868BC",
+      "airlineName": "KLM",
+      "iataCodeShort": "32Q",
+      "icaoCode": "A21N",
+      "model": "A21N",
+      "modelCode": "321-252NX",
+      "numSeats": 227,
+      "deliveryDate": "2026-03-06",
+      "registrationDate": "2026-03-06",
+      "typeName": "Airbus A321 NEO",
+      "numEngines": 2,
+      "engineType": "Jet",
+      "isFreighter": false,
+      "productionLine": "Airbus A321 NEO",
+      "ageYears": 0.3,
+      "verified": true,
+      "numRegistrations": 1
+    },
+    {
+      "id": 2156629,
+      "reg": "PH-AXP",
+      "active": true,
+      "serial": "13050",
+      "hexIcao": "4868F7",
+      "airlineName": "KLM",
+      "iataCodeShort": "32Q",
+      "icaoCode": "A21N",
+      "model": "A21N",
+      "modelCode": "321-252NX",
+      "numSeats": 227,
+      "firstFlightDate": "2026-02-16",
+      "deliveryDate": "2026-02-27",
+      "registrationDate": "2026-02-27",
+      "typeName": "Airbus A321 NEO",
+      "numEngines": 2,
+      "engineType": "Jet",
+      "isFreighter": false,
+      "productionLine": "Airbus A321 NEO",
+      "ageYears": 0.3,
+      "verified": true,
+      "numRegistrations": 1
+    },
+    {
+      "id": 2145954,
+      "reg": "PH-BKS",
+      "active": true,
+      "serial": "42502",
+      "hexIcao": "485F85",
+      "airlineName": "KLM",
+      "iataCodeShort": "781",
+      "icaoCode": "B78X",
+      "model": "B781",
+      "modelCode": "787-10",
+      "numSeats": 318,
+      "deliveryDate": "2026-01-29",
+      "registrationDate": "2026-01-29",
+      "typeName": "Boeing 787-10",
+      "numEngines": 2,
+      "engineType": "Jet",
+      "isFreighter": false,
+      "productionLine": "Boeing 787",
+      "ageYears": 0.4,
+      "verified": true,
+      "numRegistrations": 1
+    },
+    {
+      "id": 2146401,
+      "reg": "PH-AXM",
+      "active": true,
+      "serial": "12929",
+      "hexIcao": "486898",
+      "airlineName": "KLM",
+      "iataCodeShort": "32Q",
+      "icaoCode": "A21N",
+      "model": "A21N",
+      "modelCode": "321-252NX",
+      "numSeats": 227,
+      "deliveryDate": "2025-12-11",
+      "registrationDate": "2025-12-11",
+      "typeName": "Airbus A321 NEO",
+      "numEngines": 2,
+      "engineType": "Jet",
+      "isFreighter": false,
+      "productionLine": "Airbus A321 NEO",
+      "ageYears": 0.5,
+      "verified": true,
+      "numRegistrations": 1
+    },
+    {
+      "id": 2145816,
+      "reg": "PH-AXL",
+      "active": true,
+      "serial": "12807",
+      "hexIcao": "486897",
+      "airlineName": "KLM",
+      "iataCodeShort": "32Q",
+      "icaoCode": "A21N",
+      "model": "A21N",
+      "modelCode": "321-252NX",
+      "numSeats": 227,
+      "firstFlightDate": "2025-11-18",
+      "deliveryDate": "2025-11-27",
+      "registrationDate": "2025-11-27",
+      "typeName": "Airbus A321 NEO",
+      "numEngines": 2,
+      "engineType": "Jet",
+      "isFreighter": false,
+      "productionLine": "Airbus A321 NEO",
+      "ageYears": 0.6,
+      "verified": true,
+      "numRegistrations": 1
+    },
+    {
+      "id": 2145453,
+      "reg": "PH-BKR",
+      "active": true,
+      "serial": "42494",
+      "hexIcao": "486073",
+      "airlineName": "KLM",
+      "iataCodeShort": "781",
+      "icaoCode": "B78X",
+      "model": "B781",
+      "modelCode": "787-10",
+      "numSeats": 318,
+      "firstFlightDate": "2025-08-26",
+      "deliveryDate": "2025-09-12",
+      "registrationDate": "2025-09-12",
+      "typeName": "Boeing 787-10",
+      "numEngines": 2,
+      "engineType": "Jet",
+      "isFreighter": false,
+      "productionLine": "Boeing 787",
+      "ageYears": 0.8,
+      "verified": true,
+      "numRegistrations": 1
+    },
+    {
+      "id": 2145622,
+      "reg": "PH-AXK",
+      "active": true,
+      "serial": "12664",
+      "hexIcao": "486836",
+      "airlineName": "KLM",
+      "iataCodeShort": "32Q",
+      "icaoCode": "A21N",
+      "model": "A21N",
+      "modelCode": "321-252NX",
+      "numSeats": 217,
+      "deliveryDate": "2025-08-21",
+      "registrationDate": "2025-08-21",
+      "typeName": "Airbus A321 NEO",
+      "numEngines": 2,
+      "engineType": "Jet",
+      "isFreighter": false,
+      "productionLine": "Airbus A321 NEO",
+      "ageYears": 0.8,
+      "verified": true,
+      "numRegistrations": 1
+    },
+    {
+      "id": 2145742,
+      "reg": "PH-BKQ",
+      "active": true,
+      "serial": "42505",
+      "hexIcao": "485F84",
+      "airlineName": "KLM",
+      "iataCodeShort": "781",
+      "icaoCode": "B78X",
+      "model": "B781",
+      "modelCode": "787-10",
+      "numSeats": 318,
+      "deliveryDate": "2025-08-16",
+      "registrationDate": "2025-08-16",
+      "typeName": "Boeing 787-10",
+      "numEngines": 2,
+      "engineType": "Jet",
+      "isFreighter": false,
+      "productionLine": "Boeing 787",
+      "ageYears": 0.8,
+      "verified": true,
+      "numRegistrations": 1
+    }
+  ]
+}
+```
+    """
+    url = f"https://aerodatabox.p.rapidapi.com/airlines/{airlineCode}/aircrafts"
+    headers = {
+        "x-rapidapi-key": "9cda500e54mshe688ef1d857bd6bp1f9040jsn59b82e309f42",
+        "x-rapidapi-host": "aerodatabox.p.rapidapi.com"
+    }
+    querystring = {
+        "pageSize": pageSize,
+        "pageOffset": pageOffset
+    }
+    response = requests.get(url, headers=headers, params=querystring)
+    if response.status_code == 200:
+        return response.json()
+    if response.status_code == 204:
+        return []
+    else:
+        raise Exception(f"API request failed with status code {response.status_code}: {response.text}")
+
