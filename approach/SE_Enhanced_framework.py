@@ -462,7 +462,11 @@ class SEFramework:
         return 'fail'
             
 
-
+if __name__ == '__main__':
+    se = SEFramework()
+    user_requirement = "movies that fit params like 'Adventure' or 'Animation'. They are looking for three ."
+    result = se.run(user_requirement)
+    print(result)
 
 
 
